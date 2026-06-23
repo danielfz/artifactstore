@@ -98,6 +98,8 @@ public class RegistryController {
                 .build();
     }
 
+    // ---- MANIFESTS
+
     // 6. Push a manifest (docker push finalizes here)
     @PutMapping("/{repo1}/{repo2}/manifests/{tag}")
     public ResponseEntity<Void> putManifest(@PathVariable String repo1, @PathVariable String repo2,
@@ -115,8 +117,6 @@ public class RegistryController {
                 .header("Location", "/v2/" + repo + "/manifests/" + tag)
                 .build();
     }
-
-    // ---- MANIFESTS
 
     @RequestMapping(value = "/{repo1}/{repo2}/manifests/{tag}",  method = RequestMethod.HEAD)
     public ResponseEntity<Void> getManifestDescriptor(@PathVariable String repo1,
