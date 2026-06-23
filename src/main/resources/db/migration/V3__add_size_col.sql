@@ -1,0 +1,1 @@
+ALTER TABLE manifests ADD COLUMN size BIGINT NOT NULL default 0;

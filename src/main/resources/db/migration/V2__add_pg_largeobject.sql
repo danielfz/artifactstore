@@ -1,0 +1,1 @@
+ALTER TABLE blobs ADD COLUMN lo_oid OID;
