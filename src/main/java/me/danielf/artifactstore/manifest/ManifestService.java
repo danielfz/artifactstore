@@ -29,7 +29,7 @@ public class ManifestService {
     public record ManifestContent(String mediaType, String content, Long size) {}
     public Optional<ManifestContent> getManifestContent(String repo, String tag) {
         var manifest = manifestRepository.getManifestContent(repo, tag);
-
+        // TODO: update last_seen
         return manifest;
     }
 

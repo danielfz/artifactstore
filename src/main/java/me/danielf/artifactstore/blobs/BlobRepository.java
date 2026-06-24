@@ -101,6 +101,11 @@ public class BlobRepository {
         }
     }
 
+    public boolean hasManifest(String digest) {
+        return jdbcTemplate.query("SELECT 1 FROM manifest_blobs WHERE digest = ?", rs ->
+                rs.next() && rs.getInt(1) == 1, digest);
+    }
+
     @Transactional
     public void deleteBlob(String digest) {
         Long oid = jdbcTemplate.queryForObject(

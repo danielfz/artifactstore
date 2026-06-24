@@ -4,6 +4,7 @@ import jakarta.servlet.ServletInputStream;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,18 @@ public class BlobService {
 
     public Optional<Resource> get(String digest) {
         return blobRepository.getBlob(digest).map(InputStreamResource::new);
+    }
+
+    @Transactional
+    public void safelyDelete(String digest) {
+        if (blobRepository.hasManifest(digest)) {
+            throw new IllegalArgumentException("Cannot delete manifest blobs");
+        }
+        blobRepository.deleteBlob(digest);
+    }
+
+    public void delete(String digest) {
+        blobRepository.deleteBlob(digest);
     }
 
     public boolean verifyBlobs(List<String> digests) {

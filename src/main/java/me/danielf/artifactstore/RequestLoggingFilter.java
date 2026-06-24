@@ -25,15 +25,16 @@ public class RequestLoggingFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
 
         // Log request
-        log.info(">>> {} {}", req.getMethod(), req.getRequestURI());
+        log.info("--> {} {}", req.getMethod(), req.getRequestURI());
+        log.info("    # {}", req.getQueryString());
         Collections.list(req.getHeaderNames())
-                .forEach(h -> log.info("    > {}: {}", h, req.getHeader(h)));
+                .forEach(h -> log.info("    # {}: {}", h, req.getHeader(h)));
 
         chain.doFilter(request, response);
 
         // Log response
-        log.info("<<< {} {} {}", req.getMethod(), req.getRequestURI(), res.getStatus());
+        log.info("<-- {} {} {}", req.getMethod(), req.getRequestURI(), res.getStatus());
         res.getHeaderNames()
-                .forEach(h -> log.info("    < {}: {}", h, res.getHeader(h)));
+                .forEach(h -> log.info("    | {}: {}", h, res.getHeader(h)));
     }
 }

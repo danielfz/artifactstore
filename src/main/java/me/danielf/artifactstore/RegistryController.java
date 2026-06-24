@@ -98,6 +98,15 @@ public class RegistryController {
                 .build();
     }
 
+    @DeleteMapping("/{repo}/blobs/uploads/{uuid}")
+    public ResponseEntity<Void> deleteBlob(@PathVariable String repo,
+                                           @RequestParam String digest) {
+        blobService.safelyDelete(digest);
+        return ResponseEntity.status(201)
+                .header("Docker-Content-Digest", digest)
+                .build();
+    }
+
     // ---- MANIFESTS
 
     // 6. Push a manifest (docker push finalizes here)
