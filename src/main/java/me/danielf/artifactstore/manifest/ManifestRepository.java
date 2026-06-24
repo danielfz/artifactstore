@@ -95,12 +95,25 @@ public class ManifestRepository {
         );
     }
 
+    //public void updateLastSeen(String repo, String tag) {
+    //    return jdbcTemplate.update(
+    //            "SELECT tag FROM manifests WHERE repo = ? AND tag NOT LIKE 'sha256:%'",
+    //            String.class, repo
+    //    );
+    //
+    //}
+
     public List<String> list(String repo) {
         return jdbcTemplate.queryForList(
-                "SELECT reference FROM manifests WHERE repository = ? AND reference NOT LIKE 'sha256:%'",
+                "SELECT tag FROM manifests WHERE repo = ? AND tag NOT LIKE 'sha256:%'",
                 String.class, repo
         );
     }
 
-
+    public List<ManifestService.RepoEntry> list() {
+        return jdbcTemplate.queryForStream(
+                "SELECT repo, tag FROM manifests",
+                (rs, _) -> new ManifestService.RepoEntry(rs.getString("repo"), rs.getString("tag"))
+                ).toList();
+    }
 }

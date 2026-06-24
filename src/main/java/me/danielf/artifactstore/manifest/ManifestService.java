@@ -28,7 +28,9 @@ public class ManifestService {
 
     public record ManifestContent(String mediaType, String content, Long size) {}
     public Optional<ManifestContent> getManifestContent(String repo, String tag) {
-        return manifestRepository.getManifestContent(repo, tag);
+        var manifest = manifestRepository.getManifestContent(repo, tag);
+
+        return manifest;
     }
 
     public Optional<Manifest.Layer> getManifestDescriptor(String repo, String tag) {
@@ -71,4 +73,9 @@ public class ManifestService {
     public List<String> listTags(String repo) {
         return manifestRepository.list(repo.replaceAll("/$", ""));
     }
+
+    public record RepoEntry(String repo, String tag) {}
+    public List<RepoEntry> listAll() {
+        return manifestRepository.list();
+    };
 }
