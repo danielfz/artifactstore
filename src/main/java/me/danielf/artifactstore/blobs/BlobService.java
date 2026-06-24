@@ -1,7 +1,6 @@
 package me.danielf.artifactstore.blobs;
 
 import jakarta.servlet.ServletInputStream;
-import me.danielf.artifactstore.manifest.Manifest;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class BlobService {
             throw new IllegalStateException();
         }
         blobRepository.storeBlob(digest, inputStream);
-
+        uploadSessions.remove(uuid);
     }
 
     public Optional<Long> size(String digest) {

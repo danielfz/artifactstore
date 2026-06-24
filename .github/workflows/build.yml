@@ -1,0 +1,35 @@
+name: Compile into jar
+
+# Use:
+# git tag v1.0.0
+# git push origin v1.0.0
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Triggers only when you push a tag
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create a release and upload assets
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '25'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Build with Maven AOT Processing
+      run: ./mvnw clean compile spring-boot:process-aot package -DskipTests
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: target/*.jar
+        generate_release_notes: true # automatically summarizes commits
